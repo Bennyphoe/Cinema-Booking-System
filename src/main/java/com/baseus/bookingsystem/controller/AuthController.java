@@ -1,5 +1,6 @@
 package com.baseus.bookingsystem.controller;
 
+import com.baseus.bookingsystem.dto.JwtAuthResponse;
 import com.baseus.bookingsystem.dto.LoginDto;
 import com.baseus.bookingsystem.dto.RegisterDto;
 import com.baseus.bookingsystem.service.AuthService;
@@ -27,15 +28,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
-        String response = authService.login(loginDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto) {
+        JwtAuthResponse jwtAuthResponse = authService.login(loginDto);
+        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "TEST";
-    }
-
-    public record LoginRequest(String username, String password) {}
 }

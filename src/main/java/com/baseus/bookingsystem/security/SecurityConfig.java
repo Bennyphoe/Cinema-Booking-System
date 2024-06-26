@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,6 +31,7 @@ public class SecurityConfig {
                             configurer
                                     .requestMatchers("/api/auth/register").hasRole("ADMIN")
                                     .requestMatchers("/api/auth/**").permitAll()
+                                    .requestMatchers(HttpMethod.GET,"/api/showtimes/**").permitAll()
                                     .anyRequest().authenticated()
 
                             //TODO Add permit ALL for non logged in users, place this above anyRequest.authenticated

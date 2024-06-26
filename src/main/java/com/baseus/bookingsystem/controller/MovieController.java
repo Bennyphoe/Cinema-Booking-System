@@ -40,4 +40,9 @@ public class MovieController {
         return movieService.findById(movieId);
     }
 
+    @GetMapping("/showing")
+    public List<Movie> getShowingMovies() {
+        return movieService.findAllShowing();
+    }
+
 }

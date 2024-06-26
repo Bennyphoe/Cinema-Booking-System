@@ -1,6 +1,6 @@
 package com.baseus.bookingsystem.entity;
 
-import jakarta.annotation.Nonnull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,13 +8,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "movie")
+@Table(name = "movies")
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class Movie {
 
     @Id
@@ -40,6 +41,10 @@ public class Movie {
     @Column(name = "image", nullable = true)
     private String image;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<Showtime> showTimes;
+
     public Movie(String rating, int duration, LocalDateTime endDate, LocalDateTime startDate, String name) {
         this.rating = rating;
         this.duration = duration;
@@ -56,4 +61,13 @@ public class Movie {
         this.rating = rating;
         this.image = image;
     }
+
+    public void addShowtime(Showtime showtime) {
+        if (showTimes == null) {
+            showTimes = new ArrayList<>();
+        }
+        showTimes.add(showtime);
+        showtime.setMovie(this);
+    }
+
 }

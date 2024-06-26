@@ -10,4 +10,5 @@ public interface MovieService {
     Movie findById(int id);
     String delete(int id);
     String update(Movie movie);
+    List<Movie> findAllShowing();
 }

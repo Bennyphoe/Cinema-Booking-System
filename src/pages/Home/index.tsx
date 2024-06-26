@@ -1,7 +1,59 @@
-import { FC } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import './styles.scss'
+import { mockShowingData } from "./mockdata";
+import MovieCard from "../../components/MovieCard";
+
+const setValidTranslation = (translation: number, width: number) => {
+  if (translation >= 0) return 0
+  if (translation < -width) return -width
+  return translation
+}
+
+const MAX_TRANSLATION = 1000
 
 const Home: FC = () => {
+  const [startX, setStartX] = useState<number>(0)
+  const [currentX, setCurrentX] = useState<number>(0)
+  const [isDragging, setIsDragging] = useState<boolean>(false)
+  const [translationOffset, setTranslationOffset] = useState<number>(0)
+  const showingRef = useRef<HTMLDivElement | null>(null)
+  
+  const handleMouseDownOnMovieCard = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.preventDefault()
+    setIsDragging(true)
+    setStartX(event.clientX)
+    setCurrentX(event.clientX)
+  }
+
+  const handleMouseMoveOnMovieCard =(event: MouseEvent) => {
+    setCurrentX(event.clientX)
+  }
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false)
+    setTranslationOffset(prev => setValidTranslation(prev + (currentX - startX), MAX_TRANSLATION))
+  }, [currentX, startX])
+
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener('mousemove',  handleMouseMoveOnMovieCard)
+      window.addEventListener('mouseup', handleMouseUp);
+    } else {
+      window.removeEventListener('mousemove',  handleMouseMoveOnMovieCard)
+      window.removeEventListener('mouseup', handleMouseUp);
+    }
+    return () => {
+      window.removeEventListener('mousemove',  handleMouseMoveOnMovieCard)
+      window.removeEventListener('mouseup', handleMouseUp);
+    }
+  }, [isDragging, handleMouseUp])
+
+  
+
+  
+  const currentTranslation = isDragging ? currentX - startX : 0
+  const translation = setValidTranslation(translationOffset + currentTranslation, MAX_TRANSLATION)
+
   return (
     <div className="container min-vh-100">
       <nav className="navbar navbar-expand-lg bg-transparent pt-4">
@@ -25,6 +77,20 @@ const Home: FC = () => {
           </div>
         </div>
       </nav>
+      <div>
+        <h3>Now Showing</h3>
+        <hr/>
+        <div className="container-fluid card-base">
+          <div className="card-container" style={{
+            transform: `translateX(${translation}px)`,
+            transition: isDragging ? 'none' : 'transform 0.2s ease-out',
+          }} ref={showingRef}>
+            {mockShowingData.map(movie => (
+              <MovieCard movie={movie} mouseDown={handleMouseDownOnMovieCard} key={movie.name}/>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

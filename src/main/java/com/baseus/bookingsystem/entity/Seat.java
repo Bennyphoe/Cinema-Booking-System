@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "seats")
 @NoArgsConstructor
@@ -16,9 +18,6 @@ public class Seat {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "available", nullable = false)
-    private boolean available;
-
     @Column(name = "row_idx", nullable = false)
     private int rowIdx;
 
@@ -30,9 +29,19 @@ public class Seat {
     @JoinColumn(name = "hall_id", nullable = false)
     private Hall hall;
 
-    public Seat(boolean available, int rowIdx, int colIdx) {
-        this.available = available;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "reservation_seat",
+            joinColumns = @JoinColumn(name = "seat_id"),
+            inverseJoinColumns = @JoinColumn(name = "reservation_id")
+    )
+    List<Reservation> reservations;
+
+    public Seat(int rowIdx, int colIdx) {
         this.rowIdx = rowIdx;
         this.colIdx = colIdx;
     }
+
+
 }

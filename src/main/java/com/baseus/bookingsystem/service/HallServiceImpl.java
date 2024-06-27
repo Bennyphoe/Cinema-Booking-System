@@ -24,10 +24,11 @@ public class HallServiceImpl implements HallService{
     @Override
     public String save(HallCreateDto hallCreateDto) {
         Hall newHall = new Hall(hallCreateDto.getName(), hallCreateDto.getRowCount(), hallCreateDto.getColCount());
-        List<SeatInfo> seatInfos = hallCreateDto.getSeats();
-        if (seatInfos != null) {
-            for (SeatInfo seatInfo: seatInfos) {
-                newHall.addSeat(new Seat(seatInfo.isAvailable(), seatInfo.getRowIdx(), seatInfo.getColIdx()));
+        int rows = hallCreateDto.getRowCount();
+        int cols = hallCreateDto.getColCount();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                newHall.addSeat(new Seat(i, j));
             }
         }
         Hall savedHall = hallRepository.save(newHall);

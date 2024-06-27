@@ -1,10 +1,11 @@
 package com.baseus.bookingsystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "showtimes")
@@ -26,12 +27,22 @@ public class Showtime {
     @JoinColumn(name = "hall_id", nullable = false)
     private Hall hall;
 
-
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
+    @OneToMany(mappedBy = "showtime", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    List<Reservation> reservations;
+
     public Showtime(LocalDateTime time) {
         this.time = time;
+    }
+
+    public void addReservation(Reservation reservation) {
+        if (reservations == null) {
+            reservations = new ArrayList<>();
+        }
+        reservations.add(reservation);
+        reservation.setShowtime(this);
     }
 }

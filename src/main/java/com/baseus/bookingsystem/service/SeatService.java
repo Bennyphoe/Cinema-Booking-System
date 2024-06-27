@@ -1,5 +1,6 @@
 package com.baseus.bookingsystem.service;
 
+import com.baseus.bookingsystem.dto.SeatDto.SeatReserveDto;
 import com.baseus.bookingsystem.dto.SeatDto.SeatUpdateDto;
 import com.baseus.bookingsystem.entity.Seat;
 
@@ -10,5 +11,5 @@ public interface SeatService {
     List<Seat> findAll();
     Seat findById(int id);
     String delete(int id);
-    String update(SeatUpdateDto seat);
+    List<SeatReserveDto> getListOfSeatsByShowtimeAndHall(int hallId, int showtimeId);
 }

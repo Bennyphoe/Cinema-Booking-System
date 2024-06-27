@@ -29,9 +29,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(configurer ->
                             configurer
-                                    .requestMatchers("/api/auth/register").hasRole("ADMIN")
+                                    .requestMatchers("/api/auth/register").permitAll()
                                     .requestMatchers("/api/auth/**").permitAll()
                                     .requestMatchers(HttpMethod.GET,"/api/showtimes/**").permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/api/seats/**").permitAll()
                                     .anyRequest().authenticated()
 
                             //TODO Add permit ALL for non logged in users, place this above anyRequest.authenticated

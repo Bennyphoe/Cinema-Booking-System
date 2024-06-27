@@ -19,13 +19,11 @@ public class HallInfo {
     private String name;
     private int rowCount;
     private int colCount;
-    private List<SeatInfo> seatInfos;
 
     public HallInfo(Hall hall) {
         this.id = hall.getId();
         this.name = hall.getName();
         this.rowCount = hall.getRowCount();
         this.colCount = hall.getColCount();
-        this.seatInfos = hall.getSeats().stream().map(seat -> new SeatInfo(seat.getId(), seat.getRowIdx(), seat.getColIdx(), seat.isAvailable())).collect(Collectors.toList());
     }
 }

@@ -16,8 +16,6 @@ import java.util.List;
 public class HallCreateDto {
     private String name;
 
-    private List<SeatInfo> seats;
-
     private int rowCount;
 
     private int colCount;

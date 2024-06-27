@@ -9,8 +9,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class SeatInfo {
+public class SeatReserveDto {
     private int id;
+    private boolean reserved;
     private int rowIdx;
     private int colIdx;
 }

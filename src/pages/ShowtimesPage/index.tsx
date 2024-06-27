@@ -5,6 +5,7 @@ import { mockShowingData } from "../Home/mockdata";
 import { ShowtimeMovieDto, fetchMovieAndShowTimes } from "./utils/fetchMovieAndShowTimes";
 import { formatMinutes } from "../../utils/formatTime";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 type FetchQueryOptions = {
   movieId: number | undefined;
@@ -28,6 +29,7 @@ const filterMovies = (movieShowtimes: ShowtimeMovieDto[], selectedId: number | u
 }
 
 const ShowtimePage: FC = () => {
+  const navigate = useNavigate()
   const {dateOptions} = useDateSelectorHook()
   //TODO UPDATE TO USE API
   const mockdata = mockShowingData;
@@ -123,7 +125,7 @@ const ShowtimePage: FC = () => {
                 <div className="col-7 showtimes-container">
                   {movieShowtime.showtimes.length > 0 && movieShowtime.showtimes.map(showtime => {
                     return (
-                      <button key={showtime.id} type="button" className="btn btn-light showtime">{dayjs(showtime.time).format("hh:mm A")}</button>
+                      <button key={showtime.id} type="button" className="btn btn-light showtime" onClick={() => navigate(`/seatSelection/${showtime.id}`)}>{dayjs(showtime.time).format("hh:mm A")}</button>
                     )
                   })}
                   {movieShowtime.showtimes.length === 0 && <div>No Showtimes currently. Check other dates!</div>}

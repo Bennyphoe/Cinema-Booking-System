@@ -5,6 +5,7 @@ import Layout from './pages/Layout'
 import Login from './pages/Login'
 import AdminLandingPage from './pages/AdminLandingPage'
 import ShowtimePage from './pages/ShowtimesPage'
+import SeatSelectionPage from './pages/SeatSelectionPage'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/admin/:username" element={<AdminLandingPage />}/>
         <Route path="/showtime" element={<ShowtimePage />} />
+        <Route path="/seatSelection/:showtimeId" element={<SeatSelectionPage />} />
       </Route>
     </Routes>
   )

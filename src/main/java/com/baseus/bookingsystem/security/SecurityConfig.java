@@ -33,6 +33,8 @@ public class SecurityConfig {
                                     .requestMatchers("/api/auth/**").permitAll()
                                     .requestMatchers(HttpMethod.GET,"/api/showtimes/**").permitAll()
                                     .requestMatchers(HttpMethod.GET, "/api/seats/**").permitAll()
+                                    .requestMatchers(HttpMethod.POST, "/api/reservations").permitAll()
+                                    .requestMatchers(HttpMethod.GET, "/api/movies/showing").permitAll()
                                     .anyRequest().authenticated()
 
                             //TODO Add permit ALL for non logged in users, place this above anyRequest.authenticated

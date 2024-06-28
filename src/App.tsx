@@ -15,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/admin/:username" element={<AdminLandingPage />}/>
         <Route path="/showtime" element={<ShowtimePage />} />
+        <Route path="/showtime/movie/:movieId" element={<ShowtimePage />}/>
         <Route path="/seatSelection/:showtimeId" element={<SeatSelectionPage />} />
       </Route>
     </Routes>

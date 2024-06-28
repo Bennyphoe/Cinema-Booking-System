@@ -1,7 +1,9 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
 import './styles.scss'
-import { mockShowingData } from "./mockdata";
 import MovieCard from "../../components/MovieCard";
+import { useNavigate } from "react-router-dom";
+import { MovieDetail } from "./typings";
+import { fetchShowingMovies } from "../ShowtimesPage/utils/fetchShowingMovies";
 
 const setValidTranslation = (translation: number, width: number) => {
   if (translation >= 0) return 0
@@ -12,11 +14,21 @@ const setValidTranslation = (translation: number, width: number) => {
 const MAX_TRANSLATION = 1000
 
 const Home: FC = () => {
+  const navigate = useNavigate()
+  const [moviesShowing, setMoviesShowing] = useState<MovieDetail[]>([])
   const [startX, setStartX] = useState<number>(0)
   const [currentX, setCurrentX] = useState<number>(0)
   const [isDragging, setIsDragging] = useState<boolean>(false)
   const [translationOffset, setTranslationOffset] = useState<number>(0)
   const showingRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const fetchShowing = async() => {
+      const result = await fetchShowingMovies()
+      setMoviesShowing(result)
+    }
+    fetchShowing()
+  }, [])
   
   const handleMouseDownOnMovieCard = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault()
@@ -65,13 +77,13 @@ const Home: FC = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <button className="btn btn-danger px-4 py-2">
+                <button className="btn btn-danger px-4 py-2" onClick={() => navigate("/showtime")}>
                   <span>SHOWTIMES</span>
                   <i className="bi bi-calendar-week ms-2"></i>
                 </button>
               </li>
             </ul>
-            <a className="nav-link active login-btn" href="#">
+            <a className="nav-link active login-btn" href="#" onClick={() => navigate("/login")}>
               Log In (Admin)
             </a>
           </div>
@@ -85,8 +97,8 @@ const Home: FC = () => {
             transform: `translateX(${translation}px)`,
             transition: isDragging ? 'none' : 'transform 0.2s ease-out',
           }} ref={showingRef}>
-            {mockShowingData.map(movie => (
-              <MovieCard movie={movie} mouseDown={handleMouseDownOnMovieCard} key={movie.name}/>
+            {moviesShowing.map(movie => (
+              <MovieCard movie={movie} mouseDown={handleMouseDownOnMovieCard} key={movie.name} onClickBuy={() => navigate(`/showtime/movie/${movie.id}`)}/>
             ))}
           </div>
         </div>

@@ -15,7 +15,7 @@ export const useToastHook = () => {
       <>
         {show && description && 
         <ToastContainer position="top-center" style={{ zIndex: 1 }} className="p-3">
-          <Toast show={show} onClose={() => setShow(false)} delay={3000} bg="success" autohide={true}>
+          <Toast show={show} onClose={() => setShow(false)} delay={5000} bg="success" autohide={true}>
             <ToastBody>{description}</ToastBody>
           </Toast>
         </ToastContainer>

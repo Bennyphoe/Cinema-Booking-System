@@ -1,11 +1,14 @@
 import { FC, useEffect, useState } from "react";
 import './styles.css'
 import { useDateSelectorHook } from "../../hooks/DateSelectorHook";
-import { mockShowingData } from "../Home/mockdata";
 import { ShowtimeMovieDto, fetchMovieAndShowTimes } from "./utils/fetchMovieAndShowTimes";
 import { formatMinutes } from "../../utils/formatTime";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import BreadCrumb from "../../components/BreadCrumb";
+import { getBreadCrumbs } from "./utils/breadcrumbs";
+import { MovieDetail } from "../Home/typings";
+import { fetchShowingMovies } from "./utils/fetchShowingMovies";
 
 type FetchQueryOptions = {
   movieId: number | undefined;
@@ -29,10 +32,10 @@ const filterMovies = (movieShowtimes: ShowtimeMovieDto[], selectedId: number | u
 }
 
 const ShowtimePage: FC = () => {
+  const { movieId } = useParams()
   const navigate = useNavigate()
   const {dateOptions} = useDateSelectorHook()
-  //TODO UPDATE TO USE API
-  const mockdata = mockShowingData;
+  const [moviesShowing, setMoviesShowing] = useState<MovieDetail[]>([])
   const [moviesShowtimes, setMoviesShowtimes] = useState<ShowtimeMovieDto[]>([])
   const [fetchQueryOptions, setFetchQueryOptions] = useState<FetchQueryOptions>({
     movieId: undefined,
@@ -42,21 +45,29 @@ const ShowtimePage: FC = () => {
     movieId: undefined,
     dateSelected: ''
   })
-  let movieOptions: MovieOption[] = mockdata.map(movie => ({value: movie.id, text: movie.name}))
+  let movieOptions: MovieOption[] = moviesShowing.map(movie => ({value: movie.id, text: movie.name}))
   movieOptions = [{value: 0, text: "All Movies"}, ...movieOptions]
 
   useEffect(() => {
+    const fetchShowing = async() => {
+      const result = await fetchShowingMovies()
+      setMoviesShowing(result)
+    }
+    fetchShowing()
+  }, [])
+  
+  useEffect(() => {
     if (dateOptions.length > 0) {
       setFetchQueryOptions({
-        movieId: 0,
+        movieId: movieId ? Number(movieId) : 0,
         dateSelected: dateOptions[0].value
       })
       setAppliedFetchQueryOptions({
-        movieId: 0,
+        movieId: movieId ? Number(movieId) : 0,
         dateSelected: dateOptions[0].value
       })
     }
-  }, [dateOptions, mockdata])
+  }, [dateOptions, movieId])
 
   const fetchMoviesAndShowtimes = () => {
     setAppliedFetchQueryOptions(fetchQueryOptions)
@@ -76,6 +87,7 @@ const ShowtimePage: FC = () => {
   return (
     <div className="container-fluid min-vh-100">
       <h2 className="pt-3 showtime-title">Movies & Showtimes</h2>
+      <BreadCrumb breadCrumbs={getBreadCrumbs}/>
       <div className="field-selection-section">
         <select name="dates" id="dates" className="select-container" value={fetchQueryOptions.dateSelected ?? dateOptions[0].value} onChange={(eve) => {
           setFetchQueryOptions(prev => {

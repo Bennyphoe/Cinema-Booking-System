@@ -1,8 +1,12 @@
 import { FC } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useToastHook } from "../../hooks/ToastHook";
-import RegisterAdmin from "./RegisterAdmin";
-import CreateMovie from "./CreateMovie";
+import RegisterAdmin from "./RegisterAdmin/RegisterAdmin";
+import CreateMovie from "./CreateMovie/CreateMovie";
+import ViewMovies from "./ViewMovies/ViewMovies";
+import CreateHall from "./CreateHall";
+import ViewHalls from "./ViewHalls";
+import CreateShowtime from "./CreateShowtime";
 
 
 const AdminLandingPage: FC = () => {
@@ -34,6 +38,10 @@ const AdminLandingPage: FC = () => {
         </div>
         <RegisterAdmin toggleToaster={toggleToaster}/>
         <CreateMovie toggleToaster={toggleToaster}/>
+        <ViewMovies toggleToaster={toggleToaster} />
+        <CreateHall toggleToaster={toggleToaster} />
+        <ViewHalls toggleToaster={toggleToaster} />
+        <CreateShowtime toggleToaster={toggleToaster}/>
     </div>
     
   )

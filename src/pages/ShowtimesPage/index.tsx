@@ -83,7 +83,7 @@ const ShowtimePage: FC = () => {
   }, [appliedFetchQueryOptions])
 
   const filteredList = filterMovies(moviesShowtimes, appliedFetchQueryOptions.movieId)
-  // console.log(filteredList)
+  console.log(filteredList)
   return (
     <div className="container-fluid min-vh-100">
       <h2 className="pt-3 showtime-title">Movies & Showtimes</h2>
@@ -123,6 +123,7 @@ const ShowtimePage: FC = () => {
         </button>
       </div>
       <hr/>
+      {filteredList.length === 0 && <h5>Sorry! There are no Showtimes currently for selected date! Check other dates. Thanks!</h5>}
       <div className="container-fluid">
           {filteredList.map(movieShowtime => {
             return (

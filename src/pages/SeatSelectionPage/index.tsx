@@ -60,7 +60,7 @@ const SeatSelectionPage: FC = () => {
   const createNewReservation = async() => {
     const newReservation: ReservationCreateDto = {
       email: userEmail,
-      reservationDate: dayjs().toISOString(),
+      reservationDate: dayjs().format('YYYY-MM-DDTHH:mm:ss'),
       showtimeId: showtimeId!,
       seatIds: selectedSeats!.map(seat => seat.id)
     }

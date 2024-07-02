@@ -9,6 +9,7 @@ type CreateMovieDto = {
   endDate: Dayjs;
   duration: string;
   rating: string;
+  active: boolean;
   image: string | null;
 }
 
@@ -18,6 +19,7 @@ const defaultMovieOptions: CreateMovieDto = {
     endDate: dayjs(),
     duration: "",
     rating: "",
+    active: true,
     image: null
 }
 

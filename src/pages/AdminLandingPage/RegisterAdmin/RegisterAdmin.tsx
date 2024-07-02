@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Collapse } from "react-bootstrap";
-import { useErrorHook } from "../../hooks/ErrorHook";
+import { useErrorHook } from "../../../hooks/ErrorHook";
 
 type RegisterDetails = {
   username: string;

@@ -32,14 +32,18 @@ public class Hall {
     @Column(name = "col_count")
     private int colCount;
 
+    @Column(name = "active", nullable = false)
+    private boolean active;
+
     @JsonIgnore
     @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Showtime> showTimes;
 
-    public Hall(String name, int rowCount, int colCount) {
+    public Hall(String name, int rowCount, int colCount, boolean active) {
         this.name = name;
         this.rowCount = rowCount;
         this.colCount = colCount;
+        this.active = active;
     }
 
     public void addSeat(Seat seat) {

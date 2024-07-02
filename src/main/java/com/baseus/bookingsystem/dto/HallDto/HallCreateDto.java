@@ -20,4 +20,6 @@ public class HallCreateDto {
 
     private int colCount;
 
+    private boolean active;
+
 }

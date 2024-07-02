@@ -66,7 +66,7 @@ public class ShowtimeServiceImpl implements ShowtimeService{
 
     @Override
     public List<ShowtimeMovieDto> findShowTimesForAllMoviesByDate(LocalDate date) {
-        LocalDateTime currentDateTime = LocalDateTime.of(date, LocalTime.now());
+        LocalDateTime currentDateTime = LocalDateTime.of(date, date.isEqual(LocalDate.now()) ? LocalTime.now() : LocalTime.MIN);
         LocalDateTime endDateTime = LocalDateTime.of(date, LocalTime.MAX);
         List<ShowtimeMovieDto> list = new ArrayList<>();
         List<Movie> allMovies = movieRepository.findAll();
@@ -109,6 +109,7 @@ public class ShowtimeServiceImpl implements ShowtimeService{
     @Override
     public String delete(int id) {
         Showtime showTimeToDelete = entityManager.find(Showtime.class, id);
+        if (showTimeToDelete.getTime().isBefore(LocalDateTime.now())) throw new APIException(HttpStatus.BAD_REQUEST, "Cant delete a showtime that has already happen!");
         Movie movie = showTimeToDelete.getMovie();
         Hall hall = showTimeToDelete.getHall();
         movie.getShowTimes().remove(showTimeToDelete);

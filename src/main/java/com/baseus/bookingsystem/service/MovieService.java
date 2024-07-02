@@ -1,5 +1,6 @@
 package com.baseus.bookingsystem.service;
 
+import com.baseus.bookingsystem.dto.MovieDto.MovieActiveDto;
 import com.baseus.bookingsystem.entity.Movie;
 
 import java.util.List;

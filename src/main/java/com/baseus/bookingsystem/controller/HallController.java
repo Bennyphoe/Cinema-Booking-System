@@ -1,5 +1,6 @@
 package com.baseus.bookingsystem.controller;
 
+import com.baseus.bookingsystem.dto.HallDto.HallActiveWithShowtimes;
 import com.baseus.bookingsystem.dto.HallDto.HallCreateDto;
 import com.baseus.bookingsystem.dto.HallDto.HallUpdateDto;
 import com.baseus.bookingsystem.entity.Hall;
@@ -41,5 +42,10 @@ public class HallController {
     public String deleteById(@PathVariable int hallId) {
         //to delete a hall need to make sure that there are no showTimes scheduled, have to delete the showTimes first
         return hallService.delete(hallId);
+    }
+
+    @GetMapping("/active")
+    public List<HallActiveWithShowtimes> findActiveHallsWithShowtimes() {
+        return hallService.findActiveHallsWithShowtimes();
     }
 }

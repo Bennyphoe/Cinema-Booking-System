@@ -1,16 +1,19 @@
 package com.baseus.bookingsystem.dto.HallDto;
 
+import com.baseus.bookingsystem.dto.ShowtimeDto.ShowtimeWithStartAndEndInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
+import java.util.List;
+
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class HallUpdateDto {
+public class HallActiveWithShowtimes {
     private int id;
     private String name;
-    private boolean active;
+    private List<ShowtimeWithStartAndEndInfo> showtimes;
 }

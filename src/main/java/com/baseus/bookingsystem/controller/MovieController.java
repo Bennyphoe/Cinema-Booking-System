@@ -44,5 +44,4 @@ public class MovieController {
     public List<Movie> getShowingMovies() {
         return movieService.findAllShowing();
     }
-
 }

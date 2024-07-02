@@ -1,5 +1,6 @@
 package com.baseus.bookingsystem.service;
 
+import com.baseus.bookingsystem.dto.HallDto.HallActiveWithShowtimes;
 import com.baseus.bookingsystem.dto.HallDto.HallCreateDto;
 import com.baseus.bookingsystem.dto.HallDto.HallUpdateDto;
 import com.baseus.bookingsystem.entity.Hall;
@@ -12,4 +13,5 @@ public interface HallService {
     Hall findById(int id);
     String delete(int id);
     String update(HallUpdateDto hallUpdateDto);
+    List<HallActiveWithShowtimes> findActiveHallsWithShowtimes();
 }

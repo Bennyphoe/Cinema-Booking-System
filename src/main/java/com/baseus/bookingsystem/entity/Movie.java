@@ -41,6 +41,9 @@ public class Movie {
     @Column(name = "image", nullable = true)
     private String image;
 
+    @Column(name = "active", nullable = false)
+    private Boolean active;
+
     @JsonIgnore
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Showtime> showTimes;
@@ -51,6 +54,7 @@ public class Movie {
         this.endDate = endDate;
         this.startDate = startDate;
         this.name = name;
+        this.active = true;
     }
 
     public Movie(String name, LocalDateTime startDate, LocalDateTime endDate, int duration, String rating, String image) {
@@ -60,6 +64,7 @@ public class Movie {
         this.duration = duration;
         this.rating = rating;
         this.image = image;
+        this.active = true;
     }
 
     public void addShowtime(Showtime showtime) {

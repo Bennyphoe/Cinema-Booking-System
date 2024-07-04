@@ -1,0 +1,25 @@
+@import "bootstrap/scss/bootstrap";
+
+.login-btn {
+  color: $gray-300 !important;
+}
+
+.brand {
+  color: $gray-100 !important;
+}
+
+
+.card-base {
+  height: 300px;
+  background-color: black;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.card-container {
+  height: 300px;
+  background-color: black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}

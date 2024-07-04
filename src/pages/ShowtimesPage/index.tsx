@@ -127,15 +127,15 @@ const ShowtimePage: FC = () => {
       <div className="container-fluid">
           {filteredList.map(movieShowtime => {
             return (
-              <div key={movieShowtime.movie.id} className="row showtime-movie-row mb-3">
+              <div key={movieShowtime.movie.id} className="row showtime-movie-row mb-3 mx-2">
                 <div className="col-2 image-container">
-                  <img src="/insideOut.jpg" className="img" alt="image"/>
+                  <img src={`/${movieShowtime.movie.image}.jpg`} className="img" alt="image"/>
                 </div>
                 <div className="col-3">
                   <div>{movieShowtime.movie.name}</div>
                   <div>{movieShowtime.movie.rating} | {formatMinutes(movieShowtime.movie.duration)}</div>
                 </div>
-                <div className="col-7 showtimes-container">
+                <div className="col-7 showtimes-container d-flex gap-1">
                   {movieShowtime.showtimes.length > 0 && movieShowtime.showtimes.map(showtime => {
                     return (
                       <button key={showtime.id} type="button" className="btn btn-light showtime" onClick={() => navigate(`/seatSelection/${showtime.id}`)}>{dayjs(showtime.time).format("hh:mm A")}</button>

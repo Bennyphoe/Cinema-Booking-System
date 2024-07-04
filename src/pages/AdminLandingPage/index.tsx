@@ -7,6 +7,7 @@ import ViewMovies from "./ViewMovies/ViewMovies";
 import CreateHall from "./CreateHall";
 import ViewHalls from "./ViewHalls";
 import CreateShowtime from "./CreateShowtime";
+import ViewShowtimes from "./ViewShowtimes";
 
 
 const AdminLandingPage: FC = () => {
@@ -42,6 +43,7 @@ const AdminLandingPage: FC = () => {
         <CreateHall toggleToaster={toggleToaster} />
         <ViewHalls toggleToaster={toggleToaster} />
         <CreateShowtime toggleToaster={toggleToaster}/>
+        <ViewShowtimes toggleToaster={toggleToaster}/>
     </div>
     
   )

@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
-import { FC, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { Collapse } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 
@@ -24,7 +24,7 @@ const defaultMovieOptions: CreateMovieDto = {
 }
 
 type CreateMovieProps = {
-  toggleToaster: (message: string) => void
+  toggleToaster: (message: string, type?: string) => void
 }
 
 
@@ -32,9 +32,13 @@ const CreateMovie: FC<CreateMovieProps> = ({toggleToaster}) => {
   const [collapse, setCollapse] = useState<boolean>(true)
   const token = sessionStorage.getItem("jwtToken")
   const [movieDetails, setMovieDetails] = useState<CreateMovieDto>(defaultMovieOptions)
+  const fileRef = useRef<HTMLInputElement>(null)
 
   const reset = () => {
     setMovieDetails(defaultMovieOptions)
+    if (fileRef.current) {
+      fileRef.current.value = ''
+    }
   }
 
   const handleFileChange = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -49,13 +53,17 @@ const CreateMovie: FC<CreateMovieProps> = ({toggleToaster}) => {
     fetch("http://localhost:8080/api/movies", {
       method: "POST",
       headers: {"Content-Type": "application/json", "Authorization": `Bearer ${token}`},
-      body: JSON.stringify(movieDetails)
+      body: JSON.stringify({
+        ...movieDetails,
+        startDate: movieDetails.startDate.format('YYYY-MM-DDTHH:mm:ss'),
+        endDate: movieDetails.endDate.format('YYYY-MM-DDTHH:mm:ss')
+      })
     }).then(response => {
       if (response.ok) return response.text()
       throw new Error("There was an error creating the movie")
     }).then(() => {
       reset()
-      toggleToaster(`Successfully created movie ${movieDetails.name}`)
+      toggleToaster(`Successfully created movie ${movieDetails.name}`, "success")
     }).catch(err => console.log((err as Error).message))
   }
 
@@ -119,7 +127,7 @@ const CreateMovie: FC<CreateMovieProps> = ({toggleToaster}) => {
           <div className="row mb-2">
             <label htmlFor="rating" className="col-12 col-form-label">Upload Image:</label>
             <div className="col-3 mb-2">
-              <input type="file" id="rating" className="form-control" onChange={eve => handleFileChange(eve)}/>
+              <input type="file" id="rating" className="form-control" onChange={eve => handleFileChange(eve)} ref={fileRef}/>
             </div>
           </div>
           <button className="btn btn-primary col-1" onClick={submitDetails}>submit</button>

@@ -60,13 +60,14 @@ const CreateShowtime: FC<CreateShowtimeProps> = ({toggleToaster}) => {
 
   const reset = () => {
     setShowtimeDetails(defaultShowtimeDetails)
+    fetchActiveHallWithShowtimes(token!, setHalls)
   }
 
   const onSubmit = async() => {
     if (token) {
       const resultString = await createShowtime(token, showtimeDetails)
       if (!resultString.startsWith("Error")) {
-        toggleToaster(resultString)
+        toggleToaster(resultString, "success")
         reset()
       } else {
         toggleToaster(resultString, "danger")
@@ -114,7 +115,7 @@ const CreateShowtime: FC<CreateShowtimeProps> = ({toggleToaster}) => {
                 Other Showtimes:
                 {currentSelectedHallShowtimes.map(st => {
                   return (
-                    <span key={st.startDate}>{dayjs(st.startDate).format('DD/MM/YYYY hh:mm:ss')} to {dayjs(st.endDate).format('DD/MM/YYYY hh:mm:ss')}</span>
+                    <span key={st.startDate}>{dayjs(st.startDate).format('DD/MM/YYYY HH:mm:ss')} to {dayjs(st.endDate).format('DD/MM/YYYY HH:mm:ss')}</span>
                   )
                 })}
               </div>}

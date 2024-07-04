@@ -2,12 +2,10 @@ package com.baseus.bookingsystem.service;
 
 import com.baseus.bookingsystem.dto.HallDto.HallInfo;
 import com.baseus.bookingsystem.dto.MovieDto.MovieInfo;
-import com.baseus.bookingsystem.dto.ShowtimeDto.ShowtimeCreateDto;
-import com.baseus.bookingsystem.dto.ShowtimeDto.ShowtimeInfo;
-import com.baseus.bookingsystem.dto.ShowtimeDto.ShowtimeMovieDto;
-import com.baseus.bookingsystem.dto.ShowtimeDto.ShowtimeMovieHallDto;
+import com.baseus.bookingsystem.dto.ShowtimeDto.*;
 import com.baseus.bookingsystem.entity.Hall;
 import com.baseus.bookingsystem.entity.Movie;
+import com.baseus.bookingsystem.entity.Reservation;
 import com.baseus.bookingsystem.entity.Showtime;
 import com.baseus.bookingsystem.exception.APIException;
 import com.baseus.bookingsystem.repository.HallRepository;
@@ -42,7 +40,7 @@ public class ShowtimeServiceImpl implements ShowtimeService{
         LocalDateTime end = current.getTime().plusMinutes(current.getMovie().getDuration());
         LocalDateTime existingStart = existing.getTime();
         LocalDateTime existingEnd = existing.getTime().plusMinutes(existing.getMovie().getDuration());
-        return start.isBefore(existingEnd) && end.isAfter(existingStart);
+        return (start.isEqual(existingEnd) || start.isBefore(existingEnd)) && (end.isAfter(existingStart) || end.isEqual(existingStart));
     }
 
     @Transactional
@@ -107,13 +105,21 @@ public class ShowtimeServiceImpl implements ShowtimeService{
     }
 
     @Override
+    public List<ShowtimeDto> findAll() {
+        TypedQuery<Showtime> queryShowTimes = entityManager.createQuery("SELECT st FROM Showtime st JOIN FETCH st.movie JOIN FETCH st.hall ORDER BY st.id DESC", Showtime.class);
+        List<Showtime> showTimes = queryShowTimes.getResultList();
+        return showTimes.stream().map(ShowtimeDto::new).toList();
+    }
+
+    @Override
     public String delete(int id) {
         Showtime showTimeToDelete = entityManager.find(Showtime.class, id);
         if (showTimeToDelete.getTime().isBefore(LocalDateTime.now())) throw new APIException(HttpStatus.BAD_REQUEST, "Cant delete a showtime that has already happen!");
-        Movie movie = showTimeToDelete.getMovie();
-        Hall hall = showTimeToDelete.getHall();
-        movie.getShowTimes().remove(showTimeToDelete);
-        hall.getShowTimes().remove(showTimeToDelete);
+        //set reservation's showtime to null so that it's removed by orphan removal
+        List<Reservation> attachedReservations = showTimeToDelete.getReservations();
+        for (Reservation reservation: attachedReservations) {
+            reservation.setShowtime(null);
+        }
         showtimeRepository.delete(showTimeToDelete);
         return "Successfully deleted Showtime: " + id;
     }

@@ -1,9 +1,6 @@
 package com.baseus.bookingsystem.controller;
 
-import com.baseus.bookingsystem.dto.ShowtimeDto.ShowtimeCreateDto;
-import com.baseus.bookingsystem.dto.ShowtimeDto.ShowtimeInfo;
-import com.baseus.bookingsystem.dto.ShowtimeDto.ShowtimeMovieDto;
-import com.baseus.bookingsystem.dto.ShowtimeDto.ShowtimeMovieHallDto;
+import com.baseus.bookingsystem.dto.ShowtimeDto.*;
 import com.baseus.bookingsystem.entity.Showtime;
 import com.baseus.bookingsystem.service.ShowtimeService;
 import lombok.AllArgsConstructor;
@@ -43,6 +40,11 @@ public class ShowtimeController {
     @GetMapping("/{showtimeId}")
     public ShowtimeMovieHallDto findById(@PathVariable int showtimeId) {
         return showtimeService.findById(showtimeId);
+    }
+
+    @GetMapping("/all")
+    public List<ShowtimeDto> findAll() {
+        return showtimeService.findAll();
     }
 
     @DeleteMapping("/{showtimeId}")
